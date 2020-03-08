@@ -1,0 +1,47 @@
+.window-button {
+	width: 23px;
+	height: 21px;
+	border: {
+		top: 1px solid #fefefe;
+		right: 1px solid #0f0f0f;
+		bottom: 1px solid #0f0f0f;
+		left: 1px solid #fefefe;
+	}
+	background-color: #aeaeae;
+	background-repeat: no-repeat;
+	background-position: center;
+
+	&--is-active {
+		background-color: #6e8ebe;
+	}
+
+	&--is-close {
+		width: 19px;
+		height: 20px;
+		background-image: url('./../../images/30/close-button-inactive.png');
+	}
+
+	&--is-active#{&}--is-close {
+		background-image: url('./../../images/30/close-button-active.png');
+	}
+
+	&--is-change-window {
+		background-image: url('./../../images/30/change-window-button-inactive.png');
+	}
+
+	&--is-active#{&}--is-change-window {
+		background-image: url('./../../images/30/change-window-button-active.png');
+	}
+
+	&--is-maximize {
+		background-image: url('./../../images/30/maximize-button-inactive.png');
+	}
+
+	&--is-active#{&}--is-maximize {
+		background-image: url('./../../images/30/maximize-button-active.png');
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
