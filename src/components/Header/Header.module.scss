@@ -1,26 +1,21 @@
 .header {
 	display: flex;
 	flex-direction: row;
-	height: 18px;
 	border-bottom: 2px solid #000;
 	background-color: #fefefe;
 
-	@media (min-width: 768px) {
-		height: 30px ;
-	}
-
 	&__title {
 		display: none;
-		margin: auto 0 auto 5px;
+		margin: 2px 0 4px 6px;
 		font-size: 12px;
 		font-weight: normal;
 
-		@media (min-width: 540px) {
-			display: block;
+		@media (min-width: 360px) {
+			font-size: 14px;
 		}
 
-		@media (min-width: 768px) {
-			font-size: 16px;
+		@media (min-width: 575px) {
+			display: block;
 		}
 
 		&--is-main {
