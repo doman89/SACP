@@ -1,4 +1,4 @@
-.window-top-button {
+.window-button {
 	flex-shrink: 0;
 	width: 23px;
 	height: 21px;
@@ -42,5 +42,10 @@
 
 	&:focus {
 		outline: none;
+	}
+
+	&--is-bottom {
+		width: 16px;
+		height: 18px;
 	}
 }
