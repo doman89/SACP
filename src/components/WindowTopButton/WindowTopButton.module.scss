@@ -1,4 +1,5 @@
-.window-button {
+.window-top-button {
+	flex-shrink: 0;
 	width: 23px;
 	height: 21px;
 	border: {
@@ -16,8 +17,6 @@
 	}
 
 	&--is-close {
-		width: 19px;
-		height: 20px;
 		background-image: url('./../../images/30/close-button-inactive.png');
 	}
 
