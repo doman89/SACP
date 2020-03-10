@@ -12,6 +12,15 @@
 	background-repeat: no-repeat;
 	background-position: center;
 
+	&:hover {
+		border: {
+			top: 1px solid #0f0f0f;
+			right: 1px solid #fefefe;
+			bottom: 1px solid #fefefe;
+			left: 1px solid #0f0f0f;
+		}
+	}
+
 	&--is-active {
 		background-color: #6e8ebe;
 	}
@@ -55,12 +64,31 @@
 		border-bottom: 1px solid #0f0f0f;
 	}
 
+	&--is-up {
+		background-image: url('./../../images/30/arrow-up.png');
+	}
+
+	&--is-down {
+		background-image: url('./../../images/30/arrow-down.png');
+	}
+
 	&--is-resize {
 		width: 18px;
 		height: 18px;
 		border-top: 1px solid #fefefe;
 		border-bottom: 1px solid #0f0f0f;
 		background-image: url('./../../images/30/window-resize.png');
+	}
+
+	&--is-vertical {
+		width: 16px;
+		height: 22px;
+		border: {
+			top: 2px solid #fefefe;
+			right: none;
+			bottom: 2px solid #0f0f0f;
+			left: none;
+		}
 	}
 
 	&:focus {

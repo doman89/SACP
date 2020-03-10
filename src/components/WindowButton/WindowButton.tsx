@@ -12,6 +12,7 @@ export const WindowButton: React.FC<WindowButtonProps> = (props) => (
 			'is-active': props.isActive,
 			'is-bottom': props.isBottom,
 			'is-resize': props.isResize,
+			'is-vertical': props.isVertical,
 		})}
 		type="button"
 	/>

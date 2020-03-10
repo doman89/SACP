@@ -3,4 +3,5 @@ export interface WindowButtonProps {
 	isActive: boolean;
 	isBottom?: boolean;
 	isResize?: boolean;
+	isVertical?: boolean;
 }
