@@ -10,6 +10,8 @@ export const WindowButton: React.FC<WindowButtonProps> = (props) => (
 		className={style(null, {
 			[props.buttonIcon]: Boolean(props.buttonIcon),
 			'is-active': props.isActive,
+			'is-bottom': props.isBottom,
+			'is-resize': props.isResize,
 		})}
 		type="button"
 	/>

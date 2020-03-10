@@ -40,12 +40,31 @@
 		background-image: url('./../../images/30/maximize-button-active.png');
 	}
 
-	&:focus {
-		outline: none;
+	&--is-left {
+		background-image: url('./../../images/30/arrow-left.png');
+	}
+
+	&--is-right {
+		background-image: url('./../../images/30/arrow-right.png');
 	}
 
 	&--is-bottom {
 		width: 16px;
 		height: 18px;
+		border-top: 1px solid #fefefe;
+		border-bottom: 1px solid #0f0f0f;
 	}
+
+	&--is-resize {
+		width: 18px;
+		height: 18px;
+		border-top: 1px solid #fefefe;
+		border-bottom: 1px solid #0f0f0f;
+		background-image: url('./../../images/30/window-resize.png');
+	}
+
+	&:focus {
+		outline: none;
+	}
+
 }
