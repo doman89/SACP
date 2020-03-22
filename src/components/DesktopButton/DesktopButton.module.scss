@@ -9,9 +9,12 @@
 	}
 
 	&__icon {
+		position: absolute;
+		top: 0;
+		left: 50%;
 		margin: 0 auto;
+		transform: translate(-50%, -110%);
 		border: 2px solid transparent;
-		object-fit: cover;
 	}
 
 	&--is-active &__icon {
