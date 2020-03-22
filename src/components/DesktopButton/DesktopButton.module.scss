@@ -1,0 +1,31 @@
+.desktop-button {
+	position: absolute;
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+
+	&--is-active {
+		z-index: 1;
+	}
+
+	&__icon {
+		margin: 0 auto;
+		border: 2px solid transparent;
+		object-fit: cover;
+	}
+
+	&--is-active &__icon {
+		border: {
+			top: 2px solid black;
+			right: 2px solid white;
+			bottom: 2px solid white;
+			left: 2px solid black;
+		}
+	}
+
+	&__title {
+		background-color: #b1b1b1;
+		font-size: 14px;
+		letter-spacing: -0.5px;
+	}
+}
