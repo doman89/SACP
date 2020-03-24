@@ -8,20 +8,25 @@ const style = bemCssModule(DesktopButtonStyles);
 
 export const DesktopButton: React.FC<DesktopButtonProps> = (props) => {
 	const [ isActive, toggleActive ] = useState<boolean>(false);
-	const handleOnClick = (): void => {
+	const handleOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
 		if (window.innerWidth < DESKTOP_BREAKPOINT) {
-			props.handleOnClick();
+			props.handleOnClick(event);
 		} else {
 			toggleActive(true);
 		}
 	};
 
-	const handleOnDoubleClick = (): void => {
-		props.handleOnClick();
+	const handleOnDoubleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
+		props.handleOnClick(event);
 	};
 
 	const handleOnBlur = (): void => {
 		toggleActive(false);
+	};
+
+	const handleOnMouseDown = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+		toggleActive(true);
+		props.handleOnMouseDown(event);
 	};
 
 	return (
@@ -30,7 +35,7 @@ export const DesktopButton: React.FC<DesktopButtonProps> = (props) => {
 			onBlur={handleOnBlur}
 			onClick={handleOnClick}
 			onDoubleClick={handleOnDoubleClick}
-			onMouseDown={props.handleOnMouseDown}
+			onMouseDown={handleOnMouseDown}
 			onMouseUp={props.handleOnMouseUp}
 			style={{
 				top: `${props.topPosition}px`, 
@@ -40,8 +45,9 @@ export const DesktopButton: React.FC<DesktopButtonProps> = (props) => {
 		>
 			<img
 				className={style('icon')}
+				data-title={props.iconTitle}
 				draggable="false"
-				src={props.iconImage}
+				src={isActive ? props.iconImageActive : props.iconImage}
 			/>
 			<p className={style('title')}>
 				{props.iconTitle}
