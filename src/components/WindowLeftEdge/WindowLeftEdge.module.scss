@@ -1,0 +1,10 @@
+.window-left-edge {
+	flex-shrink: 0;
+	width: 3px;
+	border-left: 1px solid #fefefe;
+	background-color: #aeaeae;
+
+	&--is-active {
+		background-color: #6e8ebe;
+	}
+}
