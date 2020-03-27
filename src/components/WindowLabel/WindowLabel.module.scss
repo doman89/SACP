@@ -1,6 +1,7 @@
 .window-label {
 	flex-grow: 1;
 	height: 21px;
+	overflow: hidden;
 	border: {
 		top: 1px solid #fefefe;
 		right: 1px solid #0f0f0f;
@@ -16,7 +17,6 @@
 
 	&__title {
 		margin-left: 10px;
-		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
