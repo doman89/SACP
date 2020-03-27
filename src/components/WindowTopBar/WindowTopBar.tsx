@@ -7,27 +7,29 @@ import { default as WindowTopBarStyles} from './WindowTopBar.module.scss';
 
 const style = bemCssModules(WindowTopBarStyles);
 
-export const WindowTopBar: React.FC<WindowTopBarProps> = ({isActive, onClose, contentOf, handleOnMouseDown, handleOnMouseUp}) => (
+export const WindowTopBar: React.FC<WindowTopBarProps> = (props) => (
 	<div className={style()}>
 		<WindowButton 
 			buttonIcon="is-close"
-			contentOf={contentOf}
-			isActive={isActive}
-			onClick={onClose}
+			contentOf={props.contentOf}
+			isActive={props.isActive}
+			onClick={props.onClose}
 		/>
 		<WindowLabel
-			handleOnMouseDown={handleOnMouseDown}
-			handleOnMouseUp={handleOnMouseUp}
-			isActive={isActive}
-			title={contentOf}
+			handleOnMouseDown={props.handleOnMouseDown}
+			handleOnMouseUp={props.handleOnMouseUp}
+			isActive={props.isActive}
+			title={props.contentOf}
 		/>
 		<WindowButton
 			buttonIcon="is-maximize"
-			isActive={isActive}
+			isActive={props.isActive}
+			onClick={props.minimizeWindow}
 		/>
 		<WindowButton
 			buttonIcon="is-change-window"
-			isActive={isActive}
+			isActive={props.isActive}
+			onClick={props.toggleUnderside}
 		/>
 	</div>
 );
