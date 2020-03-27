@@ -14,6 +14,8 @@ export const WindowButton: React.FC<WindowButtonProps> = (props) => (
 			'is-resize': props.isResize,
 			'is-vertical': props.isVertical,
 		})}
+		data-title={props.contentOf}
+		onClick={props.onClick}
 		type="button"
 	/>
 );
