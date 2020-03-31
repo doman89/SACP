@@ -1,7 +1,6 @@
-export interface DesktopButtonProps {
-	handleOnClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-	handleOnMouseDown: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-	handleOnMouseUp: () => void;
+import { WithWindowContext } from '../../../contexts/WindowContext/interfaces/WithWindowContext';
+
+export interface DesktopButtonProps extends WithWindowContext {
 	iconImage: string;
 	iconImageActive: string;
 	iconTitle: string;
