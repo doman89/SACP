@@ -30,13 +30,15 @@
 		content: "";
 		position: absolute;
 		top: -1px;
-		left: 0;
-		width: 3px;
+		left: -1px;
+		width: 4px;
 		height: 1px;
-		background-image: linear-gradient(to right, #aeaeae, #aeaeae 2px, #0f0f0f 2px);
+		border-right: 1px solid #0f0f0f;
+		border-left: 1px solid #fefefe;
+		background-color: #aeaeae;
 	}
 
 	&--is-active#{&}::before {
-		background-image: linear-gradient(to right, #6e8ebe, #6e8ebe 2px, #0f0f0f 2px);
+		background-color: #6e8ebe;
 	}
 }
