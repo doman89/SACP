@@ -1,0 +1,18 @@
+.window-middle-part {
+	display: flex;
+	flex-grow: 1;
+
+	&__content {
+		display: flex;
+		position: relative;
+		flex-grow: 1;
+		max-width: calc(100% - 20px);
+		overflow: hidden;
+		border: {
+			top: 1px solid #0f0f0f;
+			right: 1px solid #fefefe;
+			left: 1px solid #0f0f0f;
+		}
+		background-color: #b1b1b1;
+	}
+}
