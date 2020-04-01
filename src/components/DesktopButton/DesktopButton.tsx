@@ -23,7 +23,7 @@ const DesktopButton: React.FC<DesktopButtonProps> = (props) => {
 	const handleOnMouseDown = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
 		const element = event.currentTarget;
 
-		props.context.handleOnMouseDown(event, element, true);
+		props.context.handleOnMouseDown(event, element, false);
 	};
 	
 	return (
