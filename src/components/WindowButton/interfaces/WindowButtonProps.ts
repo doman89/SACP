@@ -6,4 +6,5 @@ export interface WindowButtonProps {
 	isResize?: boolean;
 	isVertical?: boolean;
 	onClick?: () => void;
+	onMouseDown?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }

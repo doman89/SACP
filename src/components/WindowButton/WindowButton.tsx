@@ -16,6 +16,7 @@ export const WindowButton: React.FC<WindowButtonProps> = (props) => (
 		})}
 		data-title={props.contentOf}
 		onClick={props.onClick}
+		onMouseDown={props.onMouseDown}
 		type="button"
 	/>
 );
