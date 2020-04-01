@@ -17,7 +17,6 @@ export const WindowTopBar: React.FC<WindowTopBarProps> = (props) => (
 		/>
 		<WindowLabel
 			handleOnMouseDown={props.handleOnMouseDown}
-			handleOnMouseUp={props.handleOnMouseUp}
 			isActive={props.isActive}
 			title={props.contentOf}
 		/>
