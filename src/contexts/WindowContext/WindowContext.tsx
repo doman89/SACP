@@ -113,7 +113,7 @@ export const WindowContextProvider = ({children}: Props) => {
 
 		(activeElement.element as HTMLButtonElement).style.right =  `${Math.floor(activeElement.resizePosition.x - (event.clientX - activeElement.cursorPostion.x))}px`;
 		(activeElement.element as HTMLButtonElement).style.bottom =  `${Math.floor(activeElement.resizePosition.y - (event.clientY - activeElement.cursorPostion.y))}px`;
-	}
+	};
 
 	const handleOnMouseMove = (event: React.MouseEvent, isWindow = false): void => {
 		const { activeElement } = state;
@@ -126,7 +126,7 @@ export const WindowContextProvider = ({children}: Props) => {
 
 			if (isWindow) {
 				(activeElement.element as HTMLButtonElement).style.right = `${Math.floor(activeElement.resizePosition.x - (event.clientX - activeElement.cursorPostion.x))}px`;
-				(activeElement.element as HTMLButtonElement).style.bottom = `${Math.floor(activeElement.resizePosition.y - (event.clientY - activeElement.cursorPostion.y) - 11)}px`;
+				(activeElement.element as HTMLButtonElement).style.bottom = `${Math.floor(activeElement.resizePosition.y - (event.clientY - activeElement.cursorPostion.y) - CURSOR_OFFSET_IN_PX)}px`;
 			}
 		}
 	};

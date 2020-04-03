@@ -31,9 +31,9 @@ const Window: React.FC<WindowProps> = (props) => {
 		props.context.handleOnMouseDown(event, windowRef.current as HTMLDivElement, true);
 	};
 
-	const handleResizeWindow = (event: React.MouseEvent): void => {
+	const handleResizeWindow = (event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
 		props.context.handleOnMouseDown(event, windowRef.current as HTMLElement, true, true);
-	}
+	};
 
 	const minimizeWindow = (): void => {
 		const element = windowRef.current as HTMLDivElement;
@@ -58,7 +58,7 @@ const Window: React.FC<WindowProps> = (props) => {
 
 	const handleOnMouseMove = (event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
 		props.context.handleOnMouseMove(event, true);
-	}
+	};
 
 	const toggleUnderside = (): void => {
 		setUnderside(!isUnderside);
