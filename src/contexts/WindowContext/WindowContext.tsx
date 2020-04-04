@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { createContext, useState, useReducer} from 'react';
+import React, { createContext, useState, useReducer, useEffect} from 'react';
 import { ActiveElement } from './interfaces/ActiveElement';
 import { WindowContextState } from './interfaces/WindowContextState';
 import { WithWindowContext } from './interfaces/WithWindowContext';
@@ -15,12 +15,12 @@ const defaultState: WindowContextState = {
 			x: 0,
 			y: 0, 
 		},
+		dimensionElement: {
+			width: 0,
+			height: 0,
+		},
 		element: null,
 		elementPosition: {
-			x: 0,
-			y: 0,
-		},
-		resizePosition: {
 			x: 0,
 			y: 0,
 		},
@@ -29,9 +29,38 @@ const defaultState: WindowContextState = {
 	},
 };
 
+interface Memeber {
+	beers: string[];
+	contact: string;
+	equipment: string[];
+	hobbies: string[];
+	nickname: string;
+	photo: string;
+}
+
+export interface FirebaseResponse {
+	aboutUs: {
+		sectionDescription: string;
+		members: Memeber[];
+	};
+}
+
 interface Props {
 	children: React.ReactNode;
 }
+
+const fetchWebsiteData = async (updateState: React.Dispatch<React.SetStateAction<FirebaseResponse | null>>) => {
+	const response = await fetch('https://us-central1-silesian-amiga-classic-party.cloudfunctions.net/getWebsiteData', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	});
+
+	const jsonData = await response.json();
+	
+	updateState(jsonData);
+};
 
 const CURSOR_OFFSET_IN_PX = 22;
 
@@ -46,6 +75,12 @@ export const WindowContextProvider = ({children}: Props) => {
 		default:
 			return openedWindows;
 		}
+	}, []);
+	const [websiteData, setWebsiteData] = useState<FirebaseResponse | null>(null);
+
+	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
+		fetchWebsiteData(setWebsiteData);
 	}, []);
 
 	const changeActiveWindow = (windowName: string): void => {
@@ -73,9 +108,9 @@ export const WindowContextProvider = ({children}: Props) => {
 				x: Math.floor(rectData.left),
 				y: Math.floor(rectData.top - CURSOR_OFFSET_IN_PX ),
 			},
-			resizePosition: {
-				x: Math.floor(window.innerWidth - rectData.right),
-				y: Math.floor(window.innerHeight - rectData.bottom),
+			dimensionElement: {
+				width: rectData.width,
+				height: rectData.height,
 			},
 			element: element,
 			isActive: true,
@@ -111,23 +146,23 @@ export const WindowContextProvider = ({children}: Props) => {
 	const handleResizeWindow = (event: React.MouseEvent): void => {
 		const { activeElement } = state;
 
-		(activeElement.element as HTMLButtonElement).style.right =  `${Math.floor(activeElement.resizePosition.x - (event.clientX - activeElement.cursorPostion.x))}px`;
-		(activeElement.element as HTMLButtonElement).style.bottom =  `${Math.floor(activeElement.resizePosition.y - (event.clientY - activeElement.cursorPostion.y))}px`;
+		(activeElement.element as HTMLButtonElement).style.width =  `${Math.floor(activeElement.dimensionElement.width - (event.clientX - activeElement.cursorPostion.x))}px`;
+		(activeElement.element as HTMLButtonElement).style.height =  `${Math.floor(activeElement.dimensionElement.height - (event.clientY - activeElement.cursorPostion.y))}px`;
 	};
 
-	const handleOnMouseMove = (event: React.MouseEvent, isWindow = false): void => {
+	const handleOnMouseMove = (event: React.MouseEvent): void => {
 		const { activeElement } = state;
 
-		if (Boolean(activeElement.element) && activeElement.isActive) {
-			if (!activeElement.shouldResize) {
-				(activeElement.element as HTMLButtonElement).style.top = `${Math.floor(event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y)}px`;
-				(activeElement.element as HTMLButtonElement).style.left = `${Math.floor(event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x)}px`;
-			}
+		if (activeElement.element === null && !activeElement.isActive) {
+			return;
+		}
 
-			if (isWindow) {
-				(activeElement.element as HTMLButtonElement).style.right = `${Math.floor(activeElement.resizePosition.x - (event.clientX - activeElement.cursorPostion.x))}px`;
-				(activeElement.element as HTMLButtonElement).style.bottom = `${Math.floor(activeElement.resizePosition.y - (event.clientY - activeElement.cursorPostion.y) - CURSOR_OFFSET_IN_PX)}px`;
-			}
+		if (!activeElement.shouldResize) {
+			(activeElement.element as HTMLButtonElement).style.top = `${Math.floor(event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y)}px`;
+			(activeElement.element as HTMLButtonElement).style.left = `${Math.floor(event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x)}px`;
+		} else {
+			(activeElement.element as HTMLButtonElement).style.width =  `${Math.floor(activeElement.dimensionElement.width + (event.clientX - activeElement.cursorPostion.x))}px`;
+			(activeElement.element as HTMLButtonElement).style.height =  `${Math.floor(activeElement.dimensionElement.height + (event.clientY - activeElement.cursorPostion.y))}px`;
 		}
 	};
 
@@ -182,6 +217,7 @@ export const WindowContextProvider = ({children}: Props) => {
 				closeWindow,
 				stopDragging,
 				toggleIcon,
+				websiteData,
 			} as unknown as WithWindowContext}
 		>
 			{children}

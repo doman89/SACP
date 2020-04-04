@@ -1,4 +1,5 @@
 import { WindowContextState } from './WindowContextState';
+import { FirebaseResponse } from '../WindowContext';
 
 export interface Context extends WindowContextState {
 	changeActiveWindow: (windowName: string) => void;
@@ -11,6 +12,7 @@ export interface Context extends WindowContextState {
 	state: WindowContextState;				
 	stopDragging: () => void;
 	toggleIcon: (iconName: string, state: boolean, shouldOpenWindow?: boolean) => void;
+	websiteData: FirebaseResponse | null;
 }
 
 export interface WithWindowContext {
