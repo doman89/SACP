@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { createContext, useState, useReducer, useEffect} from 'react';
 import { ActiveElement } from './interfaces/ActiveElement';
+import { FirebaseResponse } from './interfaces/FirebaseResponse';
 import { WindowContextState } from './interfaces/WindowContextState';
 import { WithWindowContext } from './interfaces/WithWindowContext';
 
@@ -28,22 +29,6 @@ const defaultState: WindowContextState = {
 		shouldResize: false,
 	},
 };
-
-interface Memeber {
-	beers: string[];
-	contact: string;
-	equipment: string[];
-	hobbies: string[];
-	nickname: string;
-	photo: string;
-}
-
-export interface FirebaseResponse {
-	aboutUs: {
-		sectionDescription: string;
-		members: Memeber[];
-	};
-}
 
 interface Props {
 	children: React.ReactNode;
@@ -101,12 +86,12 @@ export const WindowContextProvider = ({children}: Props) => {
 		const rectData = element.getBoundingClientRect();
 		const newActiveElement: ActiveElement = {
 			cursorPostion: {
-				x: Math.floor(event.clientX),
-				y: Math.floor(event.clientY),
+				x: event.clientX,
+				y: event.clientY,
 			},
 			elementPosition: {
-				x: Math.floor(rectData.left),
-				y: Math.floor(rectData.top - CURSOR_OFFSET_IN_PX ),
+				x: rectData.left,
+				y: rectData.top - CURSOR_OFFSET_IN_PX,
 			},
 			dimensionElement: {
 				width: rectData.width,
@@ -143,13 +128,6 @@ export const WindowContextProvider = ({children}: Props) => {
 		});
 	};
 
-	const handleResizeWindow = (event: React.MouseEvent): void => {
-		const { activeElement } = state;
-
-		(activeElement.element as HTMLButtonElement).style.width =  `${Math.floor(activeElement.dimensionElement.width - (event.clientX - activeElement.cursorPostion.x))}px`;
-		(activeElement.element as HTMLButtonElement).style.height =  `${Math.floor(activeElement.dimensionElement.height - (event.clientY - activeElement.cursorPostion.y))}px`;
-	};
-
 	const handleOnMouseMove = (event: React.MouseEvent): void => {
 		const { activeElement } = state;
 
@@ -158,11 +136,11 @@ export const WindowContextProvider = ({children}: Props) => {
 		}
 
 		if (!activeElement.shouldResize) {
-			(activeElement.element as HTMLButtonElement).style.top = `${Math.floor(event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y)}px`;
-			(activeElement.element as HTMLButtonElement).style.left = `${Math.floor(event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x)}px`;
+			(activeElement.element as HTMLButtonElement).style.top = `${event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y}px`;
+			(activeElement.element as HTMLButtonElement).style.left = `${event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x}px`;
 		} else {
-			(activeElement.element as HTMLButtonElement).style.width =  `${Math.floor(activeElement.dimensionElement.width + (event.clientX - activeElement.cursorPostion.x))}px`;
-			(activeElement.element as HTMLButtonElement).style.height =  `${Math.floor(activeElement.dimensionElement.height + (event.clientY - activeElement.cursorPostion.y))}px`;
+			(activeElement.element as HTMLButtonElement).style.width =  `${activeElement.dimensionElement.width + (event.clientX - activeElement.cursorPostion.x)}px`;
+			(activeElement.element as HTMLButtonElement).style.height =  `${activeElement.dimensionElement.height + (event.clientY - activeElement.cursorPostion.y)}px`;
 		}
 	};
 
@@ -212,7 +190,6 @@ export const WindowContextProvider = ({children}: Props) => {
 				clickOnWindow,
 				handleOnMouseDown,
 				handleOnMouseMove,
-				handleResizeWindow,
 				openWindow,				
 				closeWindow,
 				stopDragging,
