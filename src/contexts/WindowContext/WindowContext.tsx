@@ -57,10 +57,15 @@ const fetchWebsiteData = async (updateState: React.Dispatch<React.SetStateAction
 
 const getTranslateProperties = (element: HTMLElement): [number, number] => {
 	const translateProperties = element.style.transform.match(REGEX_FOR_TRANSITION);
-	const x = Number.parseInt(translateProperties[1] ?? 0);
-	const y = Number.parseInt(translateProperties[2] ?? 0);
 
-	return [ x, y ];
+	if (translateProperties !== null) {
+		const x = Number.parseInt(translateProperties[1]);
+		const y = Number.parseInt(translateProperties[2]);
+
+		return [ x, y];
+	}
+	
+	return [ 0, 0 ];
 };
 
 const scrollIn = (element: HTMLDivElement, direction: ScrollDirection): void => {
