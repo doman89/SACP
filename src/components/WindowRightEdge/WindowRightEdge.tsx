@@ -10,7 +10,17 @@ const style = bemCssModules(WindowRightEdgeStyles);
 export const WindowRightEdge: React.FC<WindowRightEdgeProps> = (props) => (
 	<div className={style()}>
 		<WindowVerticalScrollbar isActive={props.isActive} />
-		<WindowButton buttonIcon='is-up' isActive={props.isActive} isVertical={true} onClick={props.scrollUp} />
-		<WindowButton buttonIcon='is-down' isActive={props.isActive} isVertical={true} onClick={props.scrollDown} />
+		<WindowButton
+			buttonIcon="is-up"
+			isActive={props.isActive}
+			isVertical={true}
+			onClick={props.scrollUp}
+		/>
+		<WindowButton
+			buttonIcon="is-down"
+			isActive={props.isActive}
+			isVertical={true}
+			onClick={props.scrollDown}
+		/>
 	</div>
 );
