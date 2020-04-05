@@ -1,8 +1,9 @@
 .window-middle-part {
 	display: flex;
-	flex-grow: 1;
+	height: 100%;
+	overflow: hidden;
 
-	&__content {
+	&__border {
 		display: flex;
 		position: relative;
 		flex-grow: 1;
@@ -14,5 +15,10 @@
 			left: 1px solid #0f0f0f;
 		}
 		background-color: #b1b1b1;
+	}
+
+	&__content {
+		display: block;
+		position: absolute;
 	}
 }
