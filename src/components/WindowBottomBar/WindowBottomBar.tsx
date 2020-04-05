@@ -7,11 +7,26 @@ import { WindowBottomBarProps } from './interfaces/WindowBottomBarProps';
 
 const style = bemCssModule(WindowBottomBarStyles);
 
-export const WindowBottomBar: React.FC<WindowBottomBarProps> = ({ isActive, handleResizeWindow }) => (
+export const WindowBottomBar: React.FC<WindowBottomBarProps> = (props) => (
 	<div className={style()}>
-		<WindowHorizontalScrollbar isActive={isActive} />
-		<WindowButton buttonIcon="is-left" isActive={isActive} isBottom={true} />
-		<WindowButton buttonIcon="is-right" isActive={isActive} isBottom={true} />
-		<WindowButton buttonIcon="is-resize" isActive={isActive} isResize={true} onMouseDown={handleResizeWindow} />
+		<WindowHorizontalScrollbar isActive={props.isActive} />
+		<WindowButton
+			buttonIcon="is-left"
+			isActive={props.isActive}
+			isBottom={true}
+			onClick={props.scrollLeft}
+		/>
+		<WindowButton
+			buttonIcon="is-right"
+			isActive={props.isActive}
+			isBottom={true}
+			onClick={props.scrollRight}
+		/>
+		<WindowButton
+			buttonIcon="is-resize"
+			isActive={props.isActive}
+			isResize={true}
+			onMouseDown={props.handleResizeWindow}
+		/>
 	</div>
 );
