@@ -1,5 +1,6 @@
 import { WindowContextState } from './WindowContextState';
-import { FirebaseResponse } from '../WindowContext';
+import { FirebaseResponse } from './FirebaseResponse';
+import { ScrollDirection } from '../WindowContext';
 
 export interface Context extends WindowContextState {
 	changeActiveWindow: (windowName: string) => void;
@@ -9,6 +10,7 @@ export interface Context extends WindowContextState {
 	handleOnMouseMove: (event: React.MouseEvent, isWindow?: boolean) => void;
 	openWindow: (windowName: string) => void;
 	openedWindows: string[];
+	scrollIn: (element: HTMLDivElement, direction: ScrollDirection) => void;
 	state: WindowContextState;				
 	stopDragging: () => void;
 	toggleIcon: (iconName: string, state: boolean, shouldOpenWindow?: boolean) => void;

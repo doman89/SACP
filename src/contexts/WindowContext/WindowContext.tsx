@@ -7,6 +7,14 @@ import { WindowContextState } from './interfaces/WindowContextState';
 import { WithWindowContext } from './interfaces/WithWindowContext';
 
 export const WindowContext = createContext<WithWindowContext>({} as WithWindowContext);
+const CURSOR_OFFSET_IN_PX = 22;
+const MINIMAL_DIMENSION_IN_PX = 100;
+const REGEX_FOR_TRANSITION = /\w\((-?\d+)px, (-?\d+)px/;
+const SCROLL_OFFSET = 100;
+
+export enum ScrollDirection {
+	Up, Right, Down, Left
+}
 
 const defaultState: WindowContextState = {
 	activeIcon: '',
@@ -47,7 +55,27 @@ const fetchWebsiteData = async (updateState: React.Dispatch<React.SetStateAction
 	updateState(jsonData);
 };
 
-const CURSOR_OFFSET_IN_PX = 22;
+const getTranslateProperties = (element: HTMLElement): [number, number] => {
+	const translateProperties = element.style.transform.match(REGEX_FOR_TRANSITION);
+	const x = Number.parseInt(translateProperties[1] ?? 0);
+	const y = Number.parseInt(translateProperties[2] ?? 0);
+
+	return [ x, y ];
+};
+
+const scrollIn = (element: HTMLDivElement, direction: ScrollDirection): void => {
+	const [ x, y ] = getTranslateProperties(element);
+
+	if (direction === ScrollDirection.Down) {
+		element.style.transform = `translate(${x}px, ${y - SCROLL_OFFSET}px)`;
+	} else if (direction === ScrollDirection.Up) {
+		element.style.transform = `translate(${x}px, ${y + SCROLL_OFFSET}px)`;
+	} else if (direction === ScrollDirection.Left) {
+		element.style.transform = `translate(${x + SCROLL_OFFSET}px, ${y}px)`;
+	} else {
+		element.style.transform = `translate(${x - SCROLL_OFFSET}px, ${y}px)`;
+	}
+};
 
 export const WindowContextProvider = ({children}: Props) => {
 	const [state, setState] = useState<WindowContextState>(defaultState);
@@ -128,19 +156,54 @@ export const WindowContextProvider = ({children}: Props) => {
 		});
 	};
 
+	
+
 	const handleOnMouseMove = (event: React.MouseEvent): void => {
 		const { activeElement } = state;
 
-		if (activeElement.element === null && !activeElement.isActive) {
+		if (activeElement.element === null || !activeElement.isActive) {
 			return;
 		}
 
 		if (!activeElement.shouldResize) {
-			(activeElement.element as HTMLButtonElement).style.top = `${event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y}px`;
-			(activeElement.element as HTMLButtonElement).style.left = `${event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x}px`;
+			const top: number = event.clientY - activeElement.cursorPostion.y + activeElement.elementPosition.y;
+			const left: number = event.clientX - activeElement.cursorPostion.x + activeElement.elementPosition.x;
+
+			if (left < 0) {
+				activeElement.element.style.left = '0';
+			} else if (left + activeElement.dimensionElement.width > window.innerWidth) {
+				activeElement.element.style.left = `${window.innerWidth - activeElement.dimensionElement.width}px`;
+			} else {
+				activeElement.element.style.left = `${left}px`;
+			}
+
+			if (top < 0) {
+				activeElement.element.style.top = '0';
+			} else if (top + activeElement.dimensionElement.height + CURSOR_OFFSET_IN_PX > window.innerHeight) {
+				activeElement.element.style.top = `${window.innerHeight - activeElement.dimensionElement.height - CURSOR_OFFSET_IN_PX}px`;
+			} else {
+				activeElement.element.style.top = `${top}px`;
+			}
+
 		} else {
-			(activeElement.element as HTMLButtonElement).style.width =  `${activeElement.dimensionElement.width + (event.clientX - activeElement.cursorPostion.x)}px`;
-			(activeElement.element as HTMLButtonElement).style.height =  `${activeElement.dimensionElement.height + (event.clientY - activeElement.cursorPostion.y)}px`;
+			const width: number = activeElement.dimensionElement.width + (event.clientX - activeElement.cursorPostion.x);
+			const height: number = activeElement.dimensionElement.height + (event.clientY - activeElement.cursorPostion.y);
+
+			if (width < MINIMAL_DIMENSION_IN_PX) {
+				(activeElement.element as HTMLButtonElement).style.width = `${MINIMAL_DIMENSION_IN_PX}px`;
+			} else if ( width > window.innerWidth ) {
+				(activeElement.element as HTMLButtonElement).style.width = `${window.innerWidth}px`;
+			} else {
+				(activeElement.element as HTMLButtonElement).style.width = `${width}px`;
+			}
+			
+			if (height < MINIMAL_DIMENSION_IN_PX) {
+				(activeElement.element as HTMLButtonElement).style.height = `${MINIMAL_DIMENSION_IN_PX}px`;
+			} else if ( height > window.innerHeight ) {
+				(activeElement.element as HTMLButtonElement).style.height = `${window.innerHeight}px`;
+			} else {
+				(activeElement.element as HTMLButtonElement).style.height = `${height}px`;
+			}
 		}
 	};
 
@@ -192,6 +255,7 @@ export const WindowContextProvider = ({children}: Props) => {
 				handleOnMouseMove,
 				openWindow,				
 				closeWindow,
+				scrollIn,
 				stopDragging,
 				toggleIcon,
 				websiteData,
