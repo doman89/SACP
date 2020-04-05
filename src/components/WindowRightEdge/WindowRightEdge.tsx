@@ -7,10 +7,10 @@ import { WindowVerticalScrollbar } from '../WindowVerticalScrollbar/WindowVertic
 
 const style = bemCssModules(WindowRightEdgeStyles);
 
-export const WindowRightEdge: React.FC<WindowRightEdgeProps> = ({ isActive }) => (
+export const WindowRightEdge: React.FC<WindowRightEdgeProps> = (props) => (
 	<div className={style()}>
-		<WindowVerticalScrollbar isActive={isActive} />
-		<WindowButton buttonIcon='is-up' isActive={isActive} isVertical={true} />
-		<WindowButton buttonIcon='is-down' isActive={isActive} isVertical={true} />
+		<WindowVerticalScrollbar isActive={props.isActive} />
+		<WindowButton buttonIcon='is-up' isActive={props.isActive} isVertical={true} onClick={props.scrollUp} />
+		<WindowButton buttonIcon='is-down' isActive={props.isActive} isVertical={true} onClick={props.scrollDown} />
 	</div>
 );
