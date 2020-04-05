@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable react/jsx-handler-names */
 import React, { useRef, useState } from 'react';
 import { default as bemCssModule } from 'bem-css-modules';
@@ -7,17 +8,47 @@ import { WindowMiddlePart } from '../WindowMiddlePart/WindowMiddlePart';
 import { WindowProps } from './interfaces/WindowProps';
 import { default as WindowStyle } from './Window.module.scss';
 import { withWindowContext } from '../../contexts/WindowContext/withWindowContext';
-
-const style = bemCssModule(WindowStyle);
+import { ScrollDirection } from '../../contexts/WindowContext/WindowContext';
 
 interface ElementDimension {
 	width: number;
 	height: number;
 }
 
+const style = bemCssModule(WindowStyle);
+
 const Window: React.FC<WindowProps> = (props) => {
 	const [isUnderside, setUnderside] = useState<boolean>(false);
 	const windowRef = useRef<HTMLDivElement>(null);
+	const contentRef = useRef<HTMLDivElement>(null);
+
+	const scrollDown = (): void => {
+		const current = contentRef.current as HTMLDivElement;
+
+		props.context.scrollIn(current, ScrollDirection.Down);
+	};
+
+	const scrollUp = (): void => {
+		const current = contentRef.current as HTMLDivElement;
+
+		props.context.scrollIn(current, ScrollDirection.Up);
+	};
+
+	const handleOnWheel = (event: React.WheelEvent): void =>
+		event.deltaY > 0 ? scrollDown() : scrollUp();
+
+
+	const scrollLeft = (): void => {
+		const current = contentRef.current as HTMLDivElement;
+
+		props.context.scrollIn(current, ScrollDirection.Left);
+	};
+
+	const scrollRight = (): void => {
+		const current = contentRef.current as HTMLDivElement;
+
+		props.context.scrollIn(current, ScrollDirection.Right);
+	};
 
 	const closeWindow = (): void => {
 		props.context.closeWindow(props.contentOf);
@@ -98,8 +129,20 @@ const Window: React.FC<WindowProps> = (props) => {
 				onClose={closeWindow}
 				toggleUnderside={toggleUnderside}
 			/>
-			<WindowMiddlePart content={props.children} isActive={isActive} />
-			<WindowBottomBar handleResizeWindow={handleResizeWindow} isActive={isActive}  />
+			<WindowMiddlePart
+				content={props.children}
+				contentReference={contentRef}
+				isActive={isActive}
+				scrollDown={scrollDown}
+				scrollUp={scrollUp}
+				wheelScroll={handleOnWheel}
+			/>
+			<WindowBottomBar
+				handleResizeWindow={handleResizeWindow}
+				isActive={isActive}
+				scrollLeft={scrollLeft}
+				scrollRight={scrollRight}
+			/>
 		</div>
 	);
 };
